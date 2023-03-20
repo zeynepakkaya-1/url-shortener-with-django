@@ -1,0 +1,109 @@
+<html>
+
+<head>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"
+        integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous">
+        </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anek+Kannada:wght@500&display=swap" rel="stylesheet">
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Anek Kannada', sans-serif;
+            color: #111;
+            text-align: center;
+            min-height: 100vh;
+        }
+
+        body,
+        section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        main {
+            width: 75%;
+            background-image: linear-gradient(to top, #30cfd0, #330867);
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(17, 17, 17, 0.125),
+                0 5px 5px rgba(17, 17, 17, 0.25);
+        }
+
+        h1 {
+            font-size: 3rem;
+            color: white;
+            margin: 0;
+            padding-top: 40px;
+            padding-bottom: 40px;
+        }
+
+        input,
+        button {
+            border: 0;
+            padding: 1rem;
+        }
+
+        input {
+            box-sizing: border-box;
+            margin-top: 0;
+            margin-bottom: 40px;
+            width: 80%;
+            border-radius: 5px;
+        }
+
+        button {
+            margin-bottom: 0;
+            margin-top: 0;
+            cursor: pointer;
+            background-color: rgba(255, 255, 255, 0.6);
+            border-radius: 5px;
+            font-size: 1.1rem;
+            flex: 1;
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <h1>URL Shortener</h1>
+        <form id="post-form">
+            {% csrf_token %}
+            <input type="text" name="link" id="link" placeholder="Enter URL here">
+            <div>
+                <button type="submit" id="shorten">Shorten</button>
+            </div>
+        </form>
+
+        <section id="section">
+            <h2></h2>
+        </section>
+
+    </main>
+
+    <script type="text/javascript">
+        $(document).on('submit', '#post-form', function (e) {
+            e.preventDefault();
+
+            $.ajax({
+                type: 'POST',
+                url: '/create',
+                data: {
+                    link: $('#link').val(),
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                },
+                success: function (data) {
+                    $('h2').html("localhost:8000/" + data)
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
